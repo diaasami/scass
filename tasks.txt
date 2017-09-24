@@ -1,0 +1,3 @@
+- Wavefront obj parser
+- Efficient structure for storing vertices (as defined in the task), probably using indices into raw buffer
+- 
