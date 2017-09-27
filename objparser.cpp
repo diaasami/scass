@@ -12,6 +12,7 @@ bool ObjParser::parse(std::istream& is)
         {
             string s;
             getline(is, s);
+
             if (_listener)
             {
                 _listener->foundComment(s);
@@ -85,6 +86,7 @@ bool ObjParser::parse(std::istream& is)
                 {
                     decltype(ObjParserEvents::FaceVertexIndices::geometryIndex) i = 0;
 
+                    // If we find another slash, we consider than index a zero.
                     if (is.peek() == '/')
                     {
                         indices.push_back(i);
