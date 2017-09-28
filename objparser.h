@@ -16,6 +16,13 @@ public:
         int geometryIndex;
         int texCoordIndex;
         int normalIndex;
+
+        bool operator==(const FaceVertexIndices &rhs) const
+        {
+            return rhs.geometryIndex == geometryIndex &&
+                    rhs.texCoordIndex == texCoordIndex &&
+                    rhs.normalIndex == normalIndex;
+        }
     };
 
     virtual ~ObjParserEvents() {}

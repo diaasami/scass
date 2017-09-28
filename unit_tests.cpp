@@ -71,6 +71,22 @@ TEST(ObjParserTest, Triggering_foundTextureCoordinate)
     op.parse(iss);
 }
 
+TEST(ObjParserTest, Triggering_foundFace)
+{
+    ObjParser op;
+
+    istringstream iss("f 1/1/1 2/2/1 3/3/1");
+
+
+    ObjParserEventsMock listener;
+    op.setListener(&listener);
+
+    const vector<ObjParserEvents::FaceVertexIndices> v{{1, 1, 1}, {2, 2, 1}, {3, 3, 1}};
+    EXPECT_CALL(listener, foundFace(v)).Times(1);
+
+    op.parse(iss);
+}
+
 TEST(ObjParserTest, Triggering_foundComment)
 {
     ObjParser op;
