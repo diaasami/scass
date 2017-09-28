@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "objparser.h"
+#include "objmodel.h"
 
 #include "gmock/gmock.h"
 #include "gmock/gmock-matchers.h"
@@ -18,6 +19,14 @@ public:
     MOCK_METHOD1(foundFace, void(const std::vector<FaceVertexIndices> &v));
     MOCK_METHOD1(foundComment, void(const std::string &));
     MOCK_METHOD1(foundUnsupportedLine, void(const std::string &));
+};
+
+class RendererMock : public Renderer
+{
+public:
+    MOCK_METHOD1(setVertexBuffer, void(const void *vBuffer));
+    MOCK_METHOD1(setIndexBuffer, void(const void *idxBuffer));
+    MOCK_METHOD3(renderCommand, void(PrimitiveType type, size_t index, size_t length));
 };
 
 using namespace std;
@@ -100,7 +109,7 @@ TEST(ObjParserTest, Triggering_foundComment)
     op.parse(iss);
 }
 
-TEST(ObjParserTest, Triggering_WhileFile_Cube)
+TEST(ObjParserTest, Triggering_WholeFile_Cube)
 {
     ObjParser op;
     ifstream ifs("cube.obj");
@@ -118,7 +127,27 @@ TEST(ObjParserTest, Triggering_WhileFile_Cube)
     op.parse(ifs);
 }
 
-int main(int argc, char** argv) {
+TEST(ObjModelTest, Rendering_WholeFile_Cube)
+{
+    RendererMock r;
+
+    ObjModel model;
+
+    model.load("cube.obj");
+    model.setRenderer(&r);
+
+    EXPECT_CALL(r, setVertexBuffer(_)).Times(1);
+    EXPECT_CALL(r, setIndexBuffer(_)).Times(1);
+
+    EXPECT_CALL(r, renderCommand(Renderer::PrimitiveType::Triangle, 0, 36)).Times(1);
+    EXPECT_CALL(r, renderCommand(Renderer::PrimitiveType::Quad, _, 0)).Times(1);
+
+    model.prepareBuffers();
+    model.makeDrawCalls();
+}
+
+int main(int argc, char** argv)
+{
   // The following line must be executed to initialize Google Mock
   // (and Google Test) before running the tests.
   ::testing::InitGoogleMock(&argc, argv);

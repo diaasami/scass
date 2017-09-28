@@ -11,7 +11,7 @@
 class Renderer
 {
 public:
-    virtual ~Renderer();
+    virtual ~Renderer() {};
     enum class PrimitiveType {Triangle, Quad};
 
     virtual void setVertexBuffer(const void *vBuffer) = 0;

@@ -39,7 +39,18 @@ void ObjModel::addFaceToBuffers(const std::vector<FaceVertexIndices> &vertices)
 {
     for (const auto &v: vertices)
     {
-        FullVertexIndices indices{v.geometryIndex - 1, v.texCoordIndex - 1, v.normalIndex - 1};
+        FullVertexIndices indices;
+
+        // Handle negative indices
+        indices.geometryIndex = v.geometryIndex >= 0
+                ? v.geometryIndex - 1
+                : static_cast<int>(_geometryBuffer.size()) + v.geometryIndex;
+        indices.texCoordIndex = v.texCoordIndex >= 0
+                ? v.texCoordIndex - 1
+                : static_cast<int>(_texCoordBuffer.size()) + v.texCoordIndex;
+        indices.normalIndex = v.normalIndex >= 0
+                ? v.normalIndex - 1
+                : static_cast<int>(_normalBuffer.size()) + v.normalIndex;
 
         decltype(_mapping)::iterator itr;
         if ((itr = _mapping.find(indices)) == _mapping.end())

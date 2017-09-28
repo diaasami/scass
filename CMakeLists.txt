@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(${PROJECT_NAME} "main.cpp" "objparser.cpp" "objmodel.cpp")
 
-add_executable("${PROJECT_NAME}-unittests" "unit_tests.cpp" "objparser.cpp")
+add_executable("${PROJECT_NAME}-unittests" "unit_tests.cpp" "objparser.cpp" "objmodel.cpp")
 
 target_link_libraries("${PROJECT_NAME}-unittests" gtest gmock)
 
