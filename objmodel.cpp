@@ -85,7 +85,7 @@ void ObjModel::addFaceToBuffers(const std::vector<FaceVertexIndices> &vertices)
     }
 }
 
-void ObjModel::foundFace(const std::vector<FaceVertexIndices> &vertices)
+void ObjModel::foundFace(std::vector<FaceVertexIndices> &&vertices)
 {
     if (3 == vertices.size())
     {
@@ -93,7 +93,7 @@ void ObjModel::foundFace(const std::vector<FaceVertexIndices> &vertices)
     }
     else if (4 == vertices.size())
     {
-        _quads.push_back(vertices);
+        _quads.push_back(std::move(vertices));
     }
 }
 

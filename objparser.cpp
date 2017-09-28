@@ -116,7 +116,7 @@ bool ObjParser::parse(std::istream& is)
 
             if (_listener)
             {
-                _listener->foundFace(v);
+                _listener->foundFace(std::move(v));
             }
         }
         else

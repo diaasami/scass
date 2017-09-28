@@ -13,10 +13,13 @@
 class ObjParserEventsMock : public ObjParserEvents
 {
 public:
+    // HACK: since gmock does not support matching against rvalue refs.
+    void foundFace(std::vector<FaceVertexIndices> &&v) {foundFace_ref(v);}
+
     MOCK_METHOD4(foundVertexGeometry, void(float x, float y, float z, float w));
     MOCK_METHOD3(foundVertexNormal, void(float x, float y, float z));
     MOCK_METHOD3(foundTextureCoordinate, void(float u, float v, float w));
-    MOCK_METHOD1(foundFace, void(const std::vector<FaceVertexIndices> &v));
+    MOCK_METHOD1(foundFace_ref, void(const std::vector<FaceVertexIndices> &v));
     MOCK_METHOD1(foundComment, void(const std::string &));
     MOCK_METHOD1(foundUnsupportedLine, void(const std::string &));
 };
@@ -91,7 +94,7 @@ TEST(ObjParserTest, Triggering_foundFace)
     op.setListener(&listener);
 
     const vector<ObjParserEvents::FaceVertexIndices> v{{1, 1, 1}, {2, 2, 1}, {3, 3, 1}};
-    EXPECT_CALL(listener, foundFace(v)).Times(1);
+    EXPECT_CALL(listener, foundFace_ref(v)).Times(1);
 
     op.parse(iss);
 }
@@ -119,7 +122,7 @@ TEST(ObjParserTest, Triggering_WholeFile_Cube)
     EXPECT_CALL(listener, foundVertexGeometry(_, _, _, _)).Times(8);
     EXPECT_CALL(listener, foundVertexNormal(_, _, _)).Times(6);
     EXPECT_CALL(listener, foundTextureCoordinate(_, _, _)).Times(4);
-    EXPECT_CALL(listener, foundFace(_)).Times(12);
+    EXPECT_CALL(listener, foundFace_ref(_)).Times(12);
 
     EXPECT_CALL(listener, foundUnsupportedLine(_)).Times(AtLeast(1));
     EXPECT_CALL(listener, foundComment(_)).Times(AtLeast(1));

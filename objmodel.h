@@ -31,7 +31,7 @@ public:
     void foundVertexGeometry(float x, float y, float z, float w);
     void foundVertexNormal(float x, float y, float z);
     void foundTextureCoordinate(float u, float v, float w);
-    void foundFace(const std::vector<FaceVertexIndices> &v);
+    void foundFace(std::vector<FaceVertexIndices> &&v);
 
 private:
     struct VertexBufferData

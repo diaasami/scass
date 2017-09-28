@@ -30,7 +30,7 @@ public:
     virtual void foundVertexGeometry(float x, float y, float z, float w) = 0;
     virtual void foundVertexNormal(float x, float y, float z) = 0;
     virtual void foundTextureCoordinate(float u, float v, float w) = 0;
-    virtual void foundFace(const std::vector<FaceVertexIndices> &v) = 0;
+    virtual void foundFace(std::vector<FaceVertexIndices> &&v) = 0;
     virtual void foundComment(const std::string &) {}
     virtual void foundUnsupportedLine(const std::string &) {}
 };
