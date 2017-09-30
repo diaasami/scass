@@ -35,6 +35,13 @@ public:
     virtual void foundUnsupportedLine(const std::string &) {}
 };
 
+
+/*
+ * ObjParser
+ * Parses a wavefile obj file and makes callbacks for parsing events
+ * See @ObjParserEvents for callback details
+ *
+ */
 class ObjParser
 {
 public:

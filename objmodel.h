@@ -19,6 +19,12 @@ public:
     virtual void renderCommand(PrimitiveType type, size_t index, size_t length) = 0;
 };
 
+/*
+ * ObjModel
+ * Loads a model from a wavefront obj file and prepares it for drawing
+ * Makes rendering calls using the interface @Renderer
+ *
+ */
 class ObjModel : public ObjParserEvents
 {
 public:
